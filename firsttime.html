@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        html,
+        body {
+            width: 100%;
+        }
+
+        h1 {
+            width: 100%;
+            text-align: center;
+        }
+
+        #auto {
+            display: flex;
+            justify-content: center;
+        }
+
+        #allcategory {
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            width: 230px;
+            height: 200px;
+            border-top: 2px solid black;
+            border-right: 2px solid black;
+            border-bottom: 2px solid black;
+            border-left: 2px solid black;
+        }
+
+        #category {
+            display: flex;
+            height: 190px;
+            width: 220px;
+            margin-right: 5px;
+            margin-left: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            gap: 5px;
+
+        }
+
+        .button {
+            justify-content: center;
+            width: 80px;
+        }
+
+        #answer {
+            margin-top: 20px;
+            display: flex;
+            border-top: 2px solid black;
+            border-right: 2px solid black;
+            border-bottom: 2px solid black;
+            border-left: 2px solid black;
+            margin-right: 30%;
+            margin-left: 30%;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        #answertable {
+            display: flex;
+        }
+
+        #allitem {
+            display: flex;
+            border-top: 2px solid black;
+            border-right: 2px solid black;
+            border-bottom: 2px solid black;
+            border-left: 2px solid black;
+            margin-right: 30%;
+            margin-left: 30%;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .selected {
+            border-color: gold;
+        }
+
+        #sendbutton {
+            display: flex;
+            justify-content: right;
+        }
+
+        #interval {
+            text-align: center;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const buttoncake = document.getElementById("buttoncake");
+            const buttonyawai = document.getElementById("buttonyawai");
+            const buttonbaum = document.getElementById("buttonbaum");
+
+            const buttonmacaron = document.getElementById("buttonmacaron");
+            const buttonmeringue = document.getElementById("buttonmeringue");
+            const buttonchoco = document.getElementById("buttonchoco");
+
+            const buttoncookie = document.getElementById("buttoncookie");
+            const buttonother = document.getElementById("buttonother");
+            const nonebutton= document.getElementById("nonebutton");
+
+            const answertable = document.getElementById("answertable");
+            const itemtable = document.getElementById("items")
+
+            let active = 0;
+
+            const allButtons = [buttoncake, buttonyawai, buttonbaum, buttonmacaron, buttonmeringue, buttonchoco, buttoncookie, buttonother];
+
+            buttoncake.addEventListener("click", function () {
+                if (active === 0) {
+                    firstclick("Cakes");
+                    buttonfalse(buttoncake);
+                    active = 1;
+                } else {
+                    secoundclick("Cakes");
+                    buttontrue(buttoncake);
+                    active = 0;
+                }
+
+            })
+
+            buttonyawai.addEventListener("click", function () {
+                if (active === 0) {
+                    firstclick("yawai");
+                    buttonfalse(buttonyawai);
+                    active = 1;
+                } else {
+                    secoundclick("yawai");
+                    buttontrue("yawai");
+                    active = 0;
+                }
+            })
+
+            buttonbaum.addEventListener("click", function () {
+                if (active === 0) {
+                    firstclick("Baum");
+                    buttonfalse(buttonbaum);
+                    active = 1;
+                } else {
+                    secoundclick("Baum");
+                    buttontrue(buttonbaum);
+                    active = 0;
+                }
+            })
+
+            buttonmacaron.addEventListener("click", function () {
+                if (active === 0) {
+                    firstclick("Macaron");
+                    buttonfalse(buttonmacaron);
+                    active = 1;
+                } else {
+                    secoundclick("Macaron");
+                    buttontrue(buttonmacaron);
+                    active = 0;
+                }
+            })
+
+            buttonmeringue.addEventListener("click", function () {
+                if (active === 0) {
+                    firstclick("Meringue");
+                    buttonfalse(buttonmeringue)
+                    active = 1;
+                } else {
+                    secoundclick("Meringue");
+                    buttontrue(buttonmeringue);
+                    active = 0;
+                }
+            })
+
+            buttonchoco.addEventListener("click", function () {
+                if (active === 0) {
+                    firstclick("Choco");
+                    buttonfalse(buttonchoco);
+                    active = 1;
+                } else {
+                    secoundclick("Choco");
+                    buttontrue(buttonchoco);
+                    active = 0;
+                }
+            })
+
+            buttoncookie.addEventListener("click", function () {
+                if (active === 0) {
+                    firstclick("Cookie");
+                    buttonfalse(buttoncookie);
+                    active = 1;
+                } else {
+                    secoundclick("Cookie");
+                    buttontrue(buttoncookie);
+                    active = 0;
+                }
+            })
+
+            buttonother.addEventListener("click", function () {
+                if (active === 0) {
+                    firstclick("other");
+                    buttonfalse(buttonother);
+                    active = 1;
+                } else {
+                    secoundclick("other");
+                    buttontrue(buttonother);
+                    active = 0;
+                }
+            })
+
+            const asobigokoro = 0;
+
+            nonebutton.addEventListener("click", function() {
+                if (asobigokoro === 0) {
+                    alert("押さないで～！次押したらおこっちゃうぞ！");
+                    asobigokoro = asobigokoro + 1;
+                } 
+                if (asobigokoro === 1) {
+                    alert("押さないでっていったよね^^")
+                    asobigokoro = asobigokoro + 1;
+                }
+                if (asobigokoro === 2) {
+                    alert("押したのわかってるからね！次はないよ！")
+                    asobigokoro = asobigokoro + 1;
+                }
+                if (asobigokoro === 3) {
+                    alert("")
+                }
+                
+            })
+
+            function firstclick(classname) {
+                const SweetsRows = document.querySelectorAll("." + classname); //全ての.classnameの行を取得
+
+                SweetsRows.forEach(row => {
+                    const cells = row.querySelectorAll("td"); //row=.classnameがついた全てのtrが一個ずつ入ってる,trの中のtdをcellsに入れてる
+
+                    const newRow = answertable.insertRow(-1); //answertableに新しい行を追加
+
+                    cells.forEach(cell => { //全てのtdを順番にcellに入れる
+                        const newCell = newRow.insertCell(); //新しく作った行にセルを追加する
+                        const originalInput = cell.querySelector("input"); //tdにinputがあるか探す
+
+                        if (originalInput) {
+                            // 本体テーブルにinputがあった場合
+                            const newInput = document.createElement("input"); //新しくinputを作る
+                            newInput.type = "text"; //inputのtypeはtext
+                            newInput.value = ""; // inputを空欄にしておく
+                            newInput.placeholder = originalInput.value; // 新しいinputのplaceholderに元に入力してあったinputの値を入力する
+                            newCell.appendChild(newInput); //inputがあったところの下にnewInputを置く
+                        } else {
+                            // 元がテキストだけなら普通にテキストを表示
+                            newCell.innerText = cell.innerText;
+                        }
+                    })
+                })
+            }
+
+            function secoundclick(classname) {
+                const answerRows = answertable.querySelectorAll("tr"); //answertableのtrを全て取得
+                const SweetRows = document.querySelectorAll("." + classname); //本体に表を取得
+
+                for (let i = 1; i < answerRows.length; i++) { //1行目は見出しだから1から数える
+                    const answerCells = answerRows[i].querySelectorAll("td"); //answerのtdを取得
+                    const SweetCells = SweetRows[i - 1].querySelectorAll("td"); // 本体の行を取る
+
+                    for (let j = 0; j < answerCells.length; j++) { //answertableの中のtdを検索
+                        const input = SweetCells[j].querySelector("input"); //answertdの中にinputがあるかどうか
+                        const answerInput = answerCells[j].querySelector("input"); // answerの中のinputを探す
+
+                        if (input && answerInput) { //answerinputと本体のinputがあった場合
+
+                            if (answerInput.value !== "") { //answerInput.valueが""出なかったら
+                                input.value = answerInput.value; // 入力されていればvalueを使う
+                            } else {
+                                input.value = answerInput.placeholder; //何も入力されてなかったらplaceholderを入力する
+                            }
+
+                        } else {
+                            SweetCells[j].innerText = answerCells[j].innerText; //本体のtdのinnerTextにanswerのテキストを入力
+                        }
+                    }
+                }
+                while (answertable.rows.length > 1) { //answertableのtrの数が1より大きいときループする
+                    answertable.deleteRow(1); //trの１を消す
+                }
+            }
+
+            function buttonfalse(activeButton) {
+                allButtons.forEach(button => {
+                    button.disabled = (button !== activeButton); // 押されたボタンを有効にする
+                });
+            }
+
+            function buttontrue() {
+                allButtons.forEach(button => {
+                    button.disabled = false; // 全部のボタンをまた押せるようにする
+                });
+            }
+            //firebaseの設定
+            const firebaseConfig = {
+                apiKey: "AIzaSyCJAUFELuwDCjoLkqe0VzJWS_VIozWX6-M",
+                authDomain: "storedb-2bc9d.firebaseapp.com",
+                projectId: "storedb-2bc9d",
+                storageBucket: "storedb-2bc9d.firebasestorage.app",
+                messagingSenderId: "568050110402",
+                appId: "1:568050110402:web:7025a85a270e8b7d5cd05b",
+            };
+
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+
+            // 発注データ送信処理
+            document.getElementById("senddata").addEventListener("click", () => {
+                const now = new Date();
+                const items = document.querySelectorAll("#items tr");
+
+                items.forEach((row, index) => {
+                    if (index === 0) return; // ヘッダー行はスキップ
+                    const nameCell = row.cells[0];
+                    const input = row.cells[1].querySelector("input");
+                    const id = nameCell.id;
+
+                    if (input && input.value) {
+                        db.collection("orders").doc(id).set({
+                            name: nameCell.innerText,
+                            quantity: parseInt(input.value),
+                            lastOrdered: firebase.firestore.Timestamp.fromDate(now)
+                        }).then(() => {
+                            row.cells[2].innerText = now.toLocaleDateString() + "（0日前）";
+                            input.value = "";
+                        }).catch(err => {
+                            console.error("保存失敗:", err);
+                        });
+                    }
+                });
+            });
+
+            // 起動時に各商品の「最後の発注日」「日数」を読み込み
+            window.addEventListener("load", () => {
+                const items = document.querySelectorAll("#items tr");
+
+                items.forEach((row, index) => {
+                    if (index === 0) return;
+                    const nameCell = row.cells[0];
+                    const id = nameCell.id;
+
+                    db.collection("orders").doc(id).get().then(doc => {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            const last = data.lastOrdered.toDate();
+                            const today = new Date();
+                            const daysAgo = Math.floor((today - last) / (1000 * 60 * 60 * 24));
+                            row.cells[2].innerText = `${last.toLocaleDateString()}（${daysAgo}日前）`;
+                        }
+                    });
+                });
+            });
+        })
+    </script>
+</head>
+
+<body>
+    <h1>在庫管理</h1>
+    <!-- 検索欄 -->
+    <div id="auto">
+        <div id="allcategory" class="jp">
+            <div id="category">
+                <button id="buttoncake" class="button">ケーク</button>
+                <button id="buttonyawai" class="button">やわい系</button>
+                <button id="buttonbaum" class="button">バウム</button>
+            </div>
+            <div id="category">
+                <button id="buttonmacaron" class="button">マカロン</button>
+                <button id="buttonmeringue" class="button">メレンゲ</button>
+                <button id="buttonchoco" class="button">チョコ</button>
+            </div>
+            <div id="category">
+                <button id="buttoncookie" class="button">クッキー</button>
+                <button id="buttonother" class="button">その他</button>
+                <button id="nonebutton" class="button">押さないでね♡</button>
+            </div>
+        </div>
+    </div>
+    <div id="answer">
+        <table border="1" id="answertable">
+            <tr>
+                <th id="AnsweritemName">名称</th>
+                <th id="AnsweritemOrder">発注数</th>
+                <th id="yesterdayOrder">発注済み</th>
+            </tr>
+        </table>
+    </div>
+    <div id="allitem">
+        <table border="1" id="items">
+            <tr>
+                <th id="itemName">名称</th>
+                <th id="itemOrder">発注数</th>
+                <th id="YesterdayOrder">発注済み</th>
+                <th>発注ペース(目安)</th>
+            </tr>
+            <tr class="Cakes">
+                <td id="CakeFruity">ケークフリュイ</td>
+                <td id="StockFruity"><input type="text"></td>
+                <td id="OrderYesterdayFruity"></td>
+                <td id="interval">15日</td>
+            </tr>
+            <tr class="Cakes">
+                <td id="CakeChoco">ケークショコラ</td>
+                <td id="StockChoco"><input type="text"></td>
+                <td id="OrderYesterdayChoco"></td>
+                <td id="interval">15日</td>
+            </tr>
+            <tr class="Cakes">
+                <td id="Cakematcha">ケーク抹茶</td>
+                <td id="Stockmatcha"><input type="text"></td>
+                <td id="OrderYesterdayMatcha"></td>
+                <td id="interval">15日</td>
+            </tr>
+            <tr class="yawai">
+                <td id="Madeleine">マドレーヌ</td>
+                <td id="StockMadeleine"><input type="text"></td>
+                <td id="OrderYesterdayMadeleine"></td>
+                <td id="interval">4日</td>
+            </tr>
+            <tr class="yawai">
+                <td id="Financier">フィナンシェ</td>
+                <td id="StockFinancier"><input type="text"></td>
+                <td id="OrderYesterdayFinancier"></td>
+                <td id="interval">4日</td>
+            </tr>
+            <tr class="yawai">
+                <td id="Brownie">ブラウニー</td>
+                <td id="StockBrownie"><input type="text"></td>
+                <td id="OrderYesterdayBrownie"></td>
+                <td id="interval">4日</td>
+            </tr>
+            <tr class="yawai">
+                <td id="CastellaOne">カステラ1本</td>
+                <td id="StockCastellaOne"><input type="text"></td>
+                <td id="OrderYesterdayCastellaOne"></td>
+                <td id="interval">5日</td>
+            </tr>
+            <tr class="yawai">
+                <td id="PetitCastella">プチカステラ</td>
+                <td id="StockPetitCastella"><input type="text"></td>
+                <td id="OrderYesterdayPetitCastella"></td>
+                <td id="interval">10日</td>
+            </tr>
+            <tr class="Baum">
+                <td id="BaumPlain">バウムプレーン</td>
+                <td id="StockBaumPlain"><input type="text"></td>
+                <td id="OrderYesterdayBaumPlain"></td>
+                <td id="interval">4日</td>
+            </tr>
+            <tr class="Baum">
+                <td id="BaumStrawberry">バウム苺</td>
+                <td id="StockBaumStrawberry"><input type="text"></td>
+                <td id="OrderYesterdayBaumStrawberry"></td>
+                <td id="interval">10日</td>
+            </tr>
+            <tr class="Baum">
+                <td id="BaumChocolate">バウムチョコ</td>
+                <td id="StockBaumChocolate"><input type="text"></td>
+                <td id="OrderYesterdayBaumChocolate"></td>
+                <td id="interval">10日</td>
+            </tr>
+            <tr class="Baum">
+                <td id="KumaMadeleine">クマドレーヌ</td>
+                <td id="StockKumaMadeleine"><input type="text"></td>
+                <td id="OrderYesterdayKumaMadeleine"></td>
+                <td id="interval">3日</td>
+            </tr>
+            <tr class="Macaron">
+                <td id="MacaronVanilla">バニラ</td>
+                <td id="StockMacaronVanilla"><input type="text"></td>
+                <td id="OrderYesterdayMacaronVanilla"></td>
+                <td id="interval">30日</td>
+            </tr>
+            <tr class="Macaron">
+                <td id="MacaronChocolat">ショコラ</td>
+                <td id="StockMacaronChocolat"><input type="text"></td>
+                <td id="OrderYesterdayMacaronChocolat"></td>
+                <td id="interval">30日</td>
+            </tr>
+            <tr class="Macaron">
+                <td id="MacaronStrawberry">苺</td>
+                <td id="StockMacaronStrawberry"><input type="text"></td>
+                <td id="OrderYesterdayMacaronStrawberry"></td>
+                <td id="interval">15日</td>
+            </tr>
+            <tr class="Macaron">
+                <td id="MacaronPassion">パッション</td>
+                <td id="StockMacaronPassion"><input type="text"></td>
+                <td id="OrderYesterdayMacaronPassion"></td>
+                <td id="interval">30日</td>
+            </tr>
+            <tr class="Macaron">
+                <td id="MacaronPistachio">ピスタチオ</td>
+                <td id="StockMacaronPistachio"><input type="text"></td>
+                <td id="OrderYesterdayMacaronPistachio"></td>
+                <td id="interval">30日</td>
+            </tr>
+            <tr class="Meringue">
+                <td id="MeringueCassisLarge">メレンゲカシス（大）</td>
+                <td id="StockMeringueCassisLarge"><input type="text"></td>
+                <td id="OrderYesterdayMeringueCassisLarge"></td>
+                <td id="interval">6日</td>
+            </tr>
+            <tr class="Meringue">
+                <td id="MeringueCassisSmall">メレンゲカシス（小）</td>
+                <td id="StockMeringueCassisSmall"><input type="text"></td>
+                <td id="OrderYesterdayMeringueCassisSmall"></td>
+                <td id="interval">4日</td>
+            </tr>
+            <tr class="Meringue">
+                <td id="MeringuePassionLarge">メレンゲパッション（大）</td>
+                <td id="StockMeringuePassionLarge"><input type="text"></td>
+                <td id="OrderYesterdayMeringuePassionLarge"></td>
+                <td id="interval">15日</td>
+            </tr>
+            <tr class="Meringue">
+                <td id="MeringuePassionSmall">メレンゲパッション（小）</td>
+                <td id="StockMeringuePassionSmall"><input type="text"></td>
+                <td id="OrderYesterdayMeringuePassionSmall"></td>
+                <td id="interval">8日</td>
+            </tr>
+            <tr class="Meringue">
+                <td id="MeringueCoconut">メレンゲココナッツ</td>
+                <td id="StockMeringueCoconut"><input type="text"></td>
+                <td id="OrderYesterdayMeringueCoconut"></td>
+                <td id="interval">15日</td>
+            </tr>
+            <tr class="Choco">
+                <td id="MendiantSweet">マンディアンスイート</td>
+                <td id="StockMendiantSweet"><input type="text"></td>
+                <td id="OrderYesterdayMendiantSweet"></td>
+                <td id="interval">4日</td>
+            </tr>
+            <tr class="Choco">
+                <td id="MendiantWhite">マンディアンホワイト</td>
+                <td id="StockMendiantWhite"><input type="text"></td>
+                <td id="OrderYesterdayMendiantWhite"></td>
+                <td id="interval">5日</td>
+            </tr>
+            <tr class="Choco">
+                <td id="MendiantMilk">マンディアンミルク</td>
+                <td id="StockMendiantMilk"><input type="text"></td>
+                <td id="OrderYesterdayMendiantMilk"></td>
+                <td id="interval">8日</td>
+            </tr>
+            <tr class="Choco">
+                <td id="MendiantBitter">マンディアンビター</td>
+                <td id="StockMendiantBitter"><input type="text"></td>
+                <td id="OrderYesterdayMendiantBitter"></td>
+                <td id="interval">10日</td>
+            </tr>
+            <tr class="Cookie">
+                <td id="CookieVanilla">クッキーバニラ</td>
+                <td id="StockCookieVanilla"><input type="text"></td>
+                <td id="OrderYesterdayCookieVanilla"></td>
+                <td id="interval">3日</td> 
+            </tr>
+            <tr class="Cookie">
+                <td id="CookieChocolat">クッキーショコラ</td>
+                <td id="StockCookieChocolat"><input type="text"></td>
+                <td id="OrderYesterdayCookieChocolat"></td>
+                <td id="interval">3日</td>
+            </tr>
+            <tr class="Cookie">
+                <td id="CookieMatchaLarge">抹茶クッキー（大）</td>
+                <td id="StockCookieMatchaLarge"><input type="text"></td>
+                <td id="OrderYesterdayCookieMatchaLarge"></td>
+                <td id="interval">8日</td>
+            </tr>
+            <tr class="Cookie">
+                <td id="CookieMatchaSmall">抹茶クッキー（小）</td>
+                <td id="StockCookieMatchaSmall"><input type="text"></td>
+                <td id="OrderYesterdayCookieMatchaSmall"></td>
+                <td id="interval">5日</td>
+            </tr>
+            <tr class="Cookie">
+                <td id="CookieWalnutLarge">くるみクッキー（大）</td>
+                <td id="StockCookieWalnutLarge"><input type="text"></td>
+                <td id="OrderYesterdayCookieWalnutLarge"></td>
+                <td id="interval">5日</td>
+            </tr>
+            <tr class="Cookie">
+                <td id="CookieWalnutSmall">くるみクッキー（小）</td>
+                <td id="StockCookieWalnutSmall"><input type="text"></td>
+                <td id="OrderYesterdayCookieWalnutSmall"></td>
+                <td id="interval">6日</td>
+            </tr>
+            <tr class="other">
+                <td id="Tuile">チュイール</td>
+                <td id="StockTuile"><input type="text"></td>
+                <td id="OrderYesterdayTuile"></td>
+                <td id="interval">4日</td>
+            </tr>
+            <tr class="other">
+                <td id="BatonChocolat">バトンショコラ</td>
+                <td id="StockBatonChocolat"><input type="text"></td>
+                <td id="OrderYesterdayBatonChocolat"></td>
+                <td id="interval">3日</td>
+            </tr>
+            <tr class="other">
+                <td id="Florentin">フロランタン</td>
+                <td id="StockFlorentin"><input type="text"></td>
+                <td id="OrderYesterdayFlorentin"></td>
+                <td id="interval">4日</td>
+            </tr>
+            <tr class="other">
+                <td id="LeafPie">リーフパイ</td>
+                <td id="StockLeafPie"><input type="text"></td>
+                <td id="OrderYesterdayLeafPie"></td>
+                <td id="interval">3日</td>
+            </tr>
+            <tr class="other">
+                <td id="CastellaRuskSmall">カステララスク小</td>
+                <td id="StockCastellaRuskSmall"><input type="text"></td>
+                <td id="OrderYesterdayCastellaRuskSmall"></td>
+                <td id="interval">5日</td>
+            </tr>
+            <tr class="other">
+                <td id="CastellaRuskLarge">カステララスク大</td>
+                <td id="StockCastellaRuskLarge"><input type="text"></td>
+                <td id="OrderYesterdayCastellaRuskLarge"></td>
+                <td id="interval">4日</td>
+            </tr>
+
+        </table>
+    </div>
+    <div id="sendbutton">
+        <button id="senddata">送信</button>
+    </div>
+</body>
+
+</html>
